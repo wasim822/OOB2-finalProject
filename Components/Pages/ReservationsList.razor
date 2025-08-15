@@ -1,0 +1,47 @@
+@page "/reservations"
+@inject YourApp.Services.ReservationService ReservationService
+@using YourApp.Models
+
+<h3>All Reservations</h3>
+
+@if (reservations == null)
+{
+    <p>Loading...</p>
+}
+else if (!reservations.Any())
+{
+    <p>No reservations found.</p>
+}
+else
+{
+    <table>
+        <thead>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var r in reservations)
+            {
+                <tr>
+                    <td>@r.FirstName</td>
+                    <td>@r.LastName</td>
+                    <td>@r.Email</td>
+                    <td>@r.Time.ToString("g")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    List<Reservation>? reservations;
+
+    protected override void OnInitialized()
+    {
+        reservations = ReservationService.GetReservations();
+    }
+}   

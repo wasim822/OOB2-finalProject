@@ -1,0 +1,45 @@
+@page "/reservation"
+@inject YourApp.Services.ReservationService ReservationService
+@using YourApp.Models
+
+<h3>Make a Reservation</h3>
+
+<EditForm Model="@reservation" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div>
+        <label>First Name:</label>
+        <InputText @bind-Value="reservation.FirstName" />
+    </div>
+    <div>
+        <label>Last Name:</label>
+        <InputText @bind-Value="reservation.LastName" />
+    </div>
+    <div>
+        <label>Email:</label>
+        <InputText @bind-Value="reservation.Email" />
+    </div>
+    <div>
+        <label>Time:</label>
+        <InputDate @bind-Value="reservation.Time" />
+    </div>
+    <button type="submit">Reserve</button>
+</EditForm>
+
+@if (success)
+{
+    <p>Reservation saved!</p>
+}
+
+@code {
+    global::YourApp.Models.Reservation reservation = new();
+    bool success = false;
+
+    void HandleValidSubmit()
+    {
+        ReservationService.AddReservation(reservation);
+        reservation = new();
+        success = true;
+    }
+}
